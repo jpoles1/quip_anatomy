@@ -1,4 +1,5 @@
 //Dependencies
+const fs = require("fs");
 const express = require("express");
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
@@ -8,6 +9,9 @@ const chalk = require("chalk");
 //load in config from .env file
 require("dotenv").config()
 const port = process.env.PORT || process.env.USER_PORT || 3000;
+//Load terms
+global.terms = JSON.parse(fs.readFileSync("terms.json"));
+console.log(terms)
 //Setting up server
 var app = express();
 httpserver = app.listen(port, () => {
@@ -21,18 +25,18 @@ io.on("connect", ()=>{
 })
 
 //Prepping server logic
-
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 //Sets the template engine to be handlebars
 var hbs = exphbs.create({defaultLayout: 'base'})
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-//Serves all files in the res folder as static resources
+//Create routers
 global.router = express.Router();
 global.api_router = express.Router();
+//Serves all files in the res folder as static resources
 app.use('/res', express.static('res'));
 app.use("/", router);
 app.use("/api", api_router);
-require("./routers/routers")
+require("./routers/routers");
 module.exports = app;
