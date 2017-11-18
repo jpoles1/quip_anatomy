@@ -1,0 +1,20 @@
+{
+  "name": "quip_anatomy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Jordan Poles",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^2.3.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "express-handlebars": "^3.0.0",
+    "hbs": "^4.0.1",
+    "socketio": "^1.0.0"
+  }
+}
