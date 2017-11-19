@@ -45,7 +45,7 @@ router.get("/session/:session_key/stats", (req, res) => {
       redict.ct = redict.ct + 1
       redict.cumscore = redict.cumscore + parseInt(session_info[session_key]["terms"][termid][uname]["score"])
       return redict
-    }, {term: terms[termid]["term"], cumscore: 0, ct: 0})
+    }, {lesson: terms[termid]["lesson"], term: terms[termid]["term"], cumscore: 0, ct: 0})
     stats[termid].score = stats[termid].cumscore / stats[termid].ct
     if(stats[termid].ct < 1){
       stats[termid] = undefined
@@ -60,18 +60,26 @@ router.get("/session/:session_key/export", (req, res) => {
     res.redirect("/")
     return 0
   }
-  res.page_data.session_key = session_key
-  res.page_data.gamestats = Object.keys(session_info[session_key]["terms"]).reduce(function(stats, termid){
+  gamestats = Object.keys(session_info[session_key]["terms"]).reduce(function(stats, termid){
     stats[termid] = Object.keys(session_info[session_key]["terms"][termid]).reduce(function(redict, uname){
       redict.ct = redict.ct + 1
       redict.cumscore = redict.cumscore + parseInt(session_info[session_key]["terms"][termid][uname]["score"])
       return redict
-    }, {term: terms[termid]["term"], cumscore: 0, ct: 0})
+    }, {lesson: terms[termid]["lesson"], term: terms[termid]["term"], cumscore: 0, ct: 0})
     stats[termid].score = stats[termid].cumscore / stats[termid].ct
     if(stats[termid].ct < 1){
       stats[termid] = undefined
     }
     return stats
   }, {})
-  res.json(res.page_data)
+  Object.keys(gamestats).map(function(termid){
+    if(!gamestats[termid]) return;
+    gamestats[termid]["notes"] = Object.keys(session_info[session_key]["terms"][termid])
+    .map(function(resp){
+      resp = session_info[session_key]["terms"][termid][resp]
+      if(resp.notes) return resp.notes
+    })
+
+  })
+  res.json(gamestats)
 })

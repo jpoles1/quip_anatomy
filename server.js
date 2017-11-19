@@ -4,12 +4,19 @@ const express = require("express");
 const exphbs  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const socketio = require("socket.io");
+const mongodb = require("mongodb")
 global.chalk = require("chalk");
 //const moment = require("moment")
 //load in config from .env file
 require("dotenv").config()
 const port = process.env.PORT || process.env.USER_PORT || 3000;
 const mongouri = process.env.MONGODB_URI;
+//Connect to DB
+MongoClient = mongodb.MongoClient
+MongoClient.connect(mongouri, function(err, mdb) {
+  global.db = mdb;
+  console.log("Connected to DB");
+});
 //Load terms
 global.terms = JSON.parse(fs.readFileSync("terms.json"));
 terms = terms.reduce(function(termdict, terminfo){

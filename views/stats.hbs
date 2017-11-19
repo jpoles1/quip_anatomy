@@ -1,8 +1,9 @@
-<a class="btn btn-primary" href="{{session_key}}/export">Export Game Data</a>
+<a class="btn btn-primary" href="export" target="_blank">Export Game Data</a>
 <br><br>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: center;">
+      <th>Lesson</th>
       <th>Term</th>
       <th>Score</th>
       <th>Answer Count</th>
@@ -13,7 +14,8 @@
     {{#each gamestats}}
       {{#if this}}
         <tr>
-          <td>{{this.term}}</td>
+          <td><b>{{this.lesson}}</b></td>
+          <td><b>{{this.term}}</b></td>
           <td>{{this.score}}</td>
           <td>{{this.ct}}</td>
           <td>{{this.cumscore}}</td>

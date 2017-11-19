@@ -42,6 +42,12 @@ io.on("connection", (socket)=>{
     player = players[socket.id]
     term_id = session_info[player.session_key]["current_term"]["id"]
     session_info[player.session_key]["terms"][term_id][player.uname] = data
+    db.collection("answers").insert({
+      "timestamp": new Date(),
+      "session_key": player.session_key, "uname": player.uname,
+      "term": {"id": term_id, "lesson": terms[term_id].lesson, "term": terms[term_id].term},
+      "score": data.score, "notes": data.notes
+    })
     io.in(player.session_key).emit("new answer", data)
     for(uname in session_info[player.session_key]["users"]){
       if(!session_info[player.session_key]["terms"][term_id][uname] && session_info[player.session_key]["users"][uname].active){
