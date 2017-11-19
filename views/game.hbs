@@ -5,6 +5,11 @@
   <br>
   <div class="jumbotron">
     <h2>Current Lesson: {{current_term.lesson}}</h2>
-    <h3>What do you know about: <b>{{current_term.term}}</b><h3>
+    <h3>What do you know about the <b>{{current_term.term}}</b><h3>
+    <textarea class="form-control" rows="5" placeholder="Take notes here"></textarea>
+    {{#each current_term.image_list}}
+      <img src="{{this}}" width="70%"/>
+      <br><br>
+    {{/each}}
   </div>
 </div>

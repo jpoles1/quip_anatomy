@@ -11,7 +11,7 @@ api_router.get("/newsession", (req, res) => {
   while(!new_key | new_key in session_info){
     new_key = generate_key()
   }
-  session_info[new_key] = {"terms": {}}
+  session_info[new_key] = {"started": 0, "users": {}, "terms": {}}
   console.log(session_info);
   res.page_data.redir_url = "/session/"+new_key
   res.page_data.redir_msg = "Created new session with key: " + new_key

@@ -1,7 +1,55 @@
-<div style="text-align: center">
+<div style="text-align: center" id="main">
   <h1>Welcome to NYU Anatomy Quips!</h1>
   <i>Session ID: {{session_key}}</i>
   <br>
   <br>
-  <a class="btn btn-primary" href="{{session_key}}/gameon">Let's Play!</a>
+  <div style="margin: 20px">
+    <u>Player List</u>
+    <ul id="player_list" class="list-group" style="margin: auto; width: 250px; overflow-wrap: break-word;">
+    </ul>
+  </div>
+  <a class="btn btn-primary" id="gameon">Let's Play!</a>
 </div>
+<script>
+  $(function(){
+    var socket = io();
+    uname = prompt("Enter a name for this game!")
+    socket.emit('registration', {session_key: "{{session_key}}", uname});
+    $("#gameon").click(function(){
+      socket.emit("ready")
+    })
+    //Socket events
+    socket.on("new player", function(player_data){
+      $("#player_list").html(Object.keys(player_data).filter(function(x){
+        return player_data[x].active == 1
+      }).map(function(x){
+        if(player_data[x].ready){
+          x = "<b>"+x+"</b>"
+        }
+        if(x == uname){
+          return "<li class='list-group-item'><u>"+x+"</u></li>"
+        }
+        return "<li class='list-group-item'>"+x+"</li>"
+      }).join(""))
+    })
+    socket.on("gameon", function(){
+      console.log("GAMIN")
+      $.get("{{session_key}}/gameon", function(data){
+        console.log(data)
+        $("#main").html(data)
+      })
+    })
+    socket.on("errormsg", function(error_msg){
+      $("#main").html("<div class='alert alert-danger'><h2>Error: "+error_msg+"</h2></div>")
+      setTimeout(function(){
+        window.location.reload(true);
+      }, 1500)
+    })
+    socket.on('disconnect', function (data) {
+      $("#main").html("<div class='alert alert-danger'><h2>Error: Connection Lost!</h2></div>")
+      setTimeout(function(){
+        window.location = "/"
+      }, 1500)
+    })
+  })
+</script>
