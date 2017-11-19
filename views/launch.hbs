@@ -1,20 +1,35 @@
-<div style="text-align: center" id="main">
-  <h1>Welcome to NYU Anatomy Quips!</h1>
+<div style="text-align: center">
+  <h1>Let's Play NYU Anatomy Quips!</h1>
   <i>Session ID: {{session_key}}</i>
   <br>
+  <input type="text" id="sharelink"></input>
   <br>
-  <div style="margin: 20px">
-    <u>Player List</u>
-    <ul id="player_list" class="list-group" style="margin: auto; width: 250px; overflow-wrap: break-word;">
-    </ul>
+  <br>
+  <div class="jumbotron" id="main">
+    <div style="margin: 20px">
+      <h3>Player List</h3>
+      <hr style="border-top-color: #333; width: 300px;">
+      <ul id="player_list" class="list-group" style="margin: auto; width: 250px; overflow-wrap: break-word;">
+      </ul>
+    </div>
+    <a class="btn btn-primary" id="gameon">Let's Play!</a>
   </div>
-  <a class="btn btn-primary" id="gameon">Let's Play!</a>
 </div>
 <script>
   $(function(){
     var socket = io();
     uname = prompt("Enter a name for this game!")
     socket.emit('registration', {session_key: "{{session_key}}", uname});
+    $("#sharelink").val(window.location.href)
+    $("#sharelink").click(function(){
+      $(this).select();
+      document.execCommand("Copy");
+      $.growl({
+        title: "Copied Game URL",
+        message: "Now go share it with some friends!",
+        location: "br", duration: 1500, delayOnHover: false
+      });
+    })
     $("#gameon").click(function(){
       socket.emit("ready")
     })
@@ -27,31 +42,52 @@
           x = "<b>"+x+"</b>"
         }
         if(x == uname){
-          return "<li class='list-group-item'><u>"+x+"</u></li>"
+          x = "<u>"+x+"</u>"
         }
-        return "<li class='list-group-item'>"+x+"</li>"
+        return "<li class='list-group-item' style='margin-bottom: 5px'>"+x+"</li>"
       }).join(""))
     })
     //Load quiz pages
+    var score_ct;
     function load_term(){
+      score_ct = {"-1": 0, "0": 0, "1": 0}
       $.get("{{session_key}}/gameon", function(data){
         console.log(data)
         $("#main").html(data)
         $("#nextterm").click(function(){
           load_term()
         })
+        $("#understanding button .ct").hide()
         $("#understanding button").click(function(){
+          if($(this).hasClass("disabled")) return;
           socket.emit("answer", {"score": $(this).val(), "notes": $("#notes").val()})
           $("#education").show()
-          $("#understanding").hide()
+          $("#understanding button").addClass("disabled")
+          $("#understanding button .ct").show()
         })
       })
     }
-    socket.on("gameon", function(){
+    socket.on("game on", function(){
         load_term()
     })
-    socket.on("nextterm", function(){
+    socket.on("next term", function(){
       $("#nextterm").show()
+    })
+    socket.on("new answer", function(data){
+      bg_col = {"-1": "bg-danger", "0": "bg-warning", "1": "bg-success"}
+      if(data.notes){
+        $("#education #notes").append("<div style='padding: 10px' class='"+bg_col[data.score.toString()]+"'>"+data.notes+"</div>")
+      }
+      button_num = {"-1": 0, "0": 1, "1": 2}
+      score_ct[data.score.toString()] = score_ct[data.score.toString()] + 1;
+      $("#understanding button .ct").eq(button_num[data.score.toString()]).html("("+score_ct[data.score.toString()]+")")
+      if(data.score < 1){
+        $.growl({
+          title: "Study Buddy Needed",
+          message: "One or more learners are having trouble with this term! Can anyone help them out?",
+          location: "br", duration: 2000
+        });
+      }
     })
     socket.on("errormsg", function(error_msg){
       $("#main").html("<div class='alert alert-danger'><h2>Error: "+error_msg+"</h2></div>")

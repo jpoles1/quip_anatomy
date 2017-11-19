@@ -28,7 +28,7 @@ io.on("connection", (socket)=>{
     io.in(player.session_key).emit('new player', session_info[player.session_key]["users"]);
     console.log(session_info[player.session_key]["users"])
     for(uname in session_info[player.session_key]["users"]){
-      if(!session_info[player.session_key]["users"][uname]["ready"]){
+      if(!session_info[player.session_key]["users"][uname]["ready"] && session_info[player.session_key]["users"][uname]["active"]){
         return;
       }
     }
@@ -36,12 +36,13 @@ io.on("connection", (socket)=>{
       rand_term(player.session_key)
     }
     console.log(player.session_key+"... Game on!")
-    io.in(player.session_key).emit("gameon")
+    io.in(player.session_key).emit("game on")
   })
   socket.on("answer", function(data){
     player = players[socket.id]
     term_id = session_info[player.session_key]["current_term"]["id"]
     session_info[player.session_key]["terms"][term_id][player.uname] = data
+    io.in(player.session_key).emit("new answer", data)
     for(uname in session_info[player.session_key]["users"]){
       if(!session_info[player.session_key]["terms"][term_id][uname] && session_info[player.session_key]["users"][uname].active){
         return;
@@ -49,7 +50,7 @@ io.on("connection", (socket)=>{
     }
     rand_term(player.session_key)
     console.log(player.session_key+"... Next term!")
-    io.in(player.session_key).emit("nextterm")
+    io.in(player.session_key).emit("next term")
   })
   socket.on('disconnect', function (data) {
     player = players[socket.id]

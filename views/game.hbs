@@ -1,23 +1,20 @@
-<div style="text-align: center">
-  <h1>Let's Play NYU Anatomy Quips!</h1>
-  <i>Session ID: {{session_key}}</i>
-  <br>
-  <br>
-  <div class="jumbotron">
-    <h2>Current Lesson: {{current_term.lesson}}</h2>
-    <h3>What do you know about the <b>{{current_term.term}}</b><h3>
-    <textarea class="form-control" rows="5" placeholder="Take notes here" id="notes"></textarea>
-    <div id="understanding" style="margin-top: 20px">
-      <button class="btn btn-danger" value=-1>I don't know this</button>
-      <button class="btn btn-warning" value=0>I sorta know this</button>
-      <button class="btn btn-success" value=1>I definitely know this</button>
-    </div>
-    <button id="nextterm" class="btn btn-primary" style="display: none; margin-top: 20px">Next Term!</button>
-    <div id="education" style="display: none; margin-top: 15px">
-      {{#each current_term.image_list}}
-        <img src="{{this}}" width="70%"/>
-        <br><br>
-      {{/each}}
-    </div>
-  </div>
+<h2>Current Lesson: {{current_term.lesson}}</h2>
+<h3>What do you know about the <b>{{current_term.term}}</b><h3>
+<textarea class="form-control" rows="5" placeholder="Take notes here" id="notes"></textarea>
+<div id="understanding" style="margin-top: 20px">
+  <button class="btn btn-danger" value=-1>I don't know this <span class="ct"></span></button>
+  <button class="btn btn-warning" value=0>I sorta know this <span class="ct"></span></button>
+  <button class="btn btn-success" value=1>I definitely know this <span class="ct"></span></button>
+</div>
+<button id="nextterm" class="btn btn-primary" style="display: none; margin-top: 20px">Next Term!</button>
+<div id="education" style="display: none; margin-top: 15px">
+  <ul id="notes" class="list-group">
+  </ul>
+  <a href="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" target="_blank">Reference Wikipedia</a>
+  <br><br>
+  {{#each current_term.image_list}}
+    <img src="{{this}}" width="70%"/>
+    <br><br>
+  {{/each}}
+  <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}}" target="_blank">More images...</a>
 </div>
