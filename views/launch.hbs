@@ -2,17 +2,32 @@
   <h1>Let's Play NYU Anatomy Quips!</h1>
   <i>Session ID: {{session_key}}</i>
   <br>
-  <input type="text" id="sharelink"></input>
+  <input type="text" id="sharelink" style="text-align: center; width: 300px"></input>
   <br>
   <br>
   <div class="jumbotron" id="main">
+    <div id="instructions" style="font-size: 12pt; text-align: left; width: 80%; margin: auto;">
+    <h3>How to Play:</h3>
+      Step 1: Copy the above link and gather some friends to study/play with. Alternatively, you can quiz yourself.
+      <br>
+      Step 2: Once everyone has joined your game session, click the play button below!
+      <br>
+      Step 3: Look at each term and see if you recognize it.
+      Where is it located? What function does it serve? How can you distinguish it from similar structures?
+      <br>
+      Step 4: Jot down some notes so your friends can see it after they answer. Share the knowledge and the love!
+      <br>
+      Step 5: Rate your confidence on this term. If you don't know it, ask a friend!
+      Be sure to take a look at the auto-generated images for the term, as well as the other available references.
+    </div>
+    <hr>
     <div style="margin: 20px">
       <h3>Player List</h3>
       <hr style="border-top-color: #333; width: 300px;">
       <ul id="player_list" class="list-group" style="margin: auto; width: 250px; overflow-wrap: break-word;">
       </ul>
     </div>
-    <a class="btn btn-primary" id="gameon">Let's Play!</a>
+    <a class="btn btn-primary btn-lg" id="gameon">Let's Play!</a>
   </div>
 </div>
 <script>
