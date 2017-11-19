@@ -52,7 +52,6 @@
     function load_term(){
       score_ct = {"-1": 0, "0": 0, "1": 0}
       $.get("{{session_key}}/gameon", function(data){
-        console.log(data)
         $("#main").html(data)
         $("#nextterm").click(function(){
           load_term()

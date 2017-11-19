@@ -1,0 +1,25 @@
+<a class="btn btn-primary" href="{{session_key}}/export">Export Game Data</a>
+<br><br>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: center;">
+      <th>Term</th>
+      <th>Score</th>
+      <th>Answer Count</th>
+      <th>Cumulative Score</th>
+    </tr>
+  </thead>
+  <tbody style="text-align: center;">
+    {{#each gamestats}}
+      {{#if this}}
+        <tr>
+          <td>{{this.term}}</td>
+          <td>{{this.score}}</td>
+          <td>{{this.ct}}</td>
+          <td>{{this.cumscore}}</td>
+        </tr>
+      {{/if}}
+    {{/each}}
+  </tbody>
+</table>
+<br>

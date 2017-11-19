@@ -9,8 +9,13 @@ global.chalk = require("chalk");
 //load in config from .env file
 require("dotenv").config()
 const port = process.env.PORT || process.env.USER_PORT || 3000;
+const mongouri = process.env.MONGODB_URI;
 //Load terms
 global.terms = JSON.parse(fs.readFileSync("terms.json"));
+terms = terms.reduce(function(termdict, terminfo){
+  termdict[terminfo.id] = terminfo
+  return termdict
+}, {})
 //Setting up server
 var app = express();
 httpserver = app.listen(port, () => {
