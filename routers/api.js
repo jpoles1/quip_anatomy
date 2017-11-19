@@ -8,7 +8,7 @@ var generate_key = function() {
 
 api_router.get("/newsession", (req, res) => {
   var new_key;
-  while(!new_key | new_key in session_info){
+  while(!new_key || new_key in session_info){
     new_key = generate_key()
   }
   session_info[new_key] = {"started": 0, "users": {}, "terms": {}}

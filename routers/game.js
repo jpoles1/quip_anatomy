@@ -1,5 +1,5 @@
 //Game Logic
-rand_term = function (session_key) {
+global.rand_term = function (session_key) {
   new_term = terms[Math.floor(Math.random()*terms.length)]
   while(new_term.id in session_info[session_key]["terms"]){
     new_term = terms[Math.floor(Math.random()*terms.length)]
@@ -27,9 +27,9 @@ router.get("/session/:session_key/gameon", (req, res) => {
     return 0
   }
   res.page_data.session_key = session_key
-  if(!session_info[session_key]["current_term"]){
+  /*if(!session_info[session_key]["current_term"]){
     rand_term(session_key)
-  }
+  }*/
   res.page_data.current_term = session_info[session_key]["current_term"]
   res.page_data.current_term.image_list = res.page_data.current_term.imgurls.split(";")
   res.render("game.hbs", res.page_data)

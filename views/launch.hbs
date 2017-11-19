@@ -32,12 +32,26 @@
         return "<li class='list-group-item'>"+x+"</li>"
       }).join(""))
     })
-    socket.on("gameon", function(){
-      console.log("GAMIN")
+    //Load quiz pages
+    function load_term(){
       $.get("{{session_key}}/gameon", function(data){
         console.log(data)
         $("#main").html(data)
+        $("#nextterm").click(function(){
+          load_term()
+        })
+        $("#understanding button").click(function(){
+          socket.emit("answer", {"score": $(this).val(), "notes": $("#notes").val()})
+          $("#education").show()
+          $("#understanding").hide()
+        })
       })
+    }
+    socket.on("gameon", function(){
+        load_term()
+    })
+    socket.on("nextterm", function(){
+      $("#nextterm").show()
     })
     socket.on("errormsg", function(error_msg){
       $("#main").html("<div class='alert alert-danger'><h2>Error: "+error_msg+"</h2></div>")
