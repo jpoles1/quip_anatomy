@@ -8,13 +8,23 @@
 </div>
 <button id="nextterm" class="btn btn-primary" style="display: none; margin-top: 20px">Next Term!</button>
 <div id="education" style="display: none; margin-top: 15px">
-  <ul id="notes" class="list-group">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a aria-controls="ed-info" role="tab" data-toggle="tab">Info</a></li>
+    <li role="presentation"><a aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
   </ul>
-  <a href="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" target="_blank">Reference Wikipedia</a>
-  <br><br>
-  {{#each current_term.image_list}}
-    <img src="{{this}}" width="70%"/>
-    <br><br>
-  {{/each}}
-  <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}} human anatomy" target="_blank">More images...</a>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="ed-info">
+      <a href="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" target="_blank">Reference Wikipedia</a>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="ed-images">
+      {{#each current_term.image_list}}
+        <img src="{{this}}" width="70%"/>
+        <br><br>
+      {{/each}}
+      <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}} human anatomy" target="_blank">More images...</a>
+    </div>
+  </div>
 </div>

@@ -14,6 +14,7 @@ const mongouri = process.env.MONGODB_URI;
 //Connect to DB
 MongoClient = mongodb.MongoClient
 MongoClient.connect(mongouri, function(err, mdb) {
+  if (err) throw err;
   global.db = mdb;
   console.log("Connected to DB");
 });
