@@ -10,14 +10,15 @@
 <div id="education" style="display: none; margin-top: 15px">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a aria-controls="ed-info" role="tab" data-toggle="tab">Info</a></li>
-    <li role="presentation"><a aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
+    <li role="presentation" class="active"><a href="#ed-info" aria-controls="ed-info" role="tab" data-toggle="tab">Info</a></li>
+    <li role="presentation"><a href="#ed-images" aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="ed-info">
       <a href="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" target="_blank">Reference Wikipedia</a>
+      <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}} human anatomy" target="_blank">Google Images</a>
     </div>
     <div role="tabpanel" class="tab-pane" id="ed-images">
       {{#each current_term.image_list}}

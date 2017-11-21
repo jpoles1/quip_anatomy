@@ -75,9 +75,14 @@
         $("#understanding button").click(function(){
           if($(this).hasClass("disabled")) return;
           socket.emit("answer", {"score": $(this).val(), "notes": $("#notes").val()})
-          $("#education").show()
           $("#understanding button").addClass("disabled")
           $("#understanding button .ct").show()
+          $("#education").show()
+          console.log($('.nav-tabs a'))
+          $('.nav-tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+          })
         })
       })
     }
