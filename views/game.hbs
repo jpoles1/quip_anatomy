@@ -10,14 +10,18 @@
 <div id="education" style="display: none; margin-top: 15px">
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#ed-info" aria-controls="ed-info" role="tab" data-toggle="tab">Info</a></li>
+    <li role="presentation" class="active"><a href="#ed-notes" aria-controls="ed-notes" role="tab" data-toggle="tab">Shared Notes</a></li>
     <li role="presentation"><a href="#ed-images" aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
+    <li role="presentation"><a href="#ed-info" aria-controls="ed-info" role="tab" data-toggle="tab">Other References</a></li>
+    <li role="presentation"><a href="#ed-stats" aria-controls="ed-stats" role="tab" data-toggle="tab">Stats</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="ed-info">
+    <div role="tabpanel" class="tab-pane" id="ed-info">
+      <br>
       <a href="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" target="_blank">Reference Wikipedia</a>
+      <br>
       <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}} human anatomy" target="_blank">Google Images</a>
     </div>
     <div role="tabpanel" class="tab-pane" id="ed-images">
@@ -26,6 +30,32 @@
         <br><br>
       {{/each}}
       <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}} human anatomy" target="_blank">More images...</a>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="ed-stats">
+      <!-- Include barplot of confidence distributions here -->
+    </div>
+    <div role="tabpanel" class="tab-pane active" id="ed-notes">
+      <!-- Include notes with high confidence here -->
+      <div id="wikinote">
+      </div>
+      <hr>
+      {{#each ed_notes}}
+      <div class="ed_notes">
+        <div>
+          <div class="vote roundrect" answerid={{this._id}}>
+            <div class="increment unmarked up note_up" value=1></div>
+            <div class="increment unmarked down note_down" value=-1></div>
+            <div class="count">{{this.votes}}</div>
+          </div>
+        </div>
+        <div style="padding: 0 15px 0 15px; font-size: 11pt;">
+          {{this.notes}}
+          <br>
+          <sub><i>Created on: {{this.timestamp}}</i></sub>
+        </div>
+      </div>
+      <hr>
+      {{/each}}
     </div>
   </div>
 </div>

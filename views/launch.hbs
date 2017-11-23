@@ -78,12 +78,33 @@
           $("#understanding button").addClass("disabled")
           $("#understanding button .ct").show()
           $("#education").show()
-          console.log($('.nav-tabs a'))
           $('.nav-tabs a').click(function (e) {
             e.preventDefault()
             $(this).tab('show')
           })
         })
+        //Setup note vote
+        $(".increment").click(function(){
+          var count = parseInt($("~ .count", this).text());
+          if(!$(this).hasClass("unmarked")) return;
+          if($(this).hasClass("up")) {
+            var count = count + 1;
+             $("~ .count", this).text(count);
+          } else {
+            var count = count - 1;
+             $("~ .count", this).text(count);
+          }
+          socket.emit("vote ednote", {
+            vote: $(this).attr("value"),
+            answerid: $(this).parent().attr("answerid")
+          })
+          $(this).parent().addClass("bump");
+
+          setTimeout(function(){
+            $(this).parent().removeClass("bump");
+          }, 400);
+          $(this).parent().children(".increment").removeClass("unmarked")
+        });
       })
     }
     socket.on("game on", function(){

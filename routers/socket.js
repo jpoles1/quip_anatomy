@@ -1,3 +1,5 @@
+const ObjectID = require('mongodb').ObjectID;
+
 players = {}
 io.on("connection", (socket)=>{
   console.log(chalk.yellow("New Client Connected!"))
@@ -40,13 +42,14 @@ io.on("connection", (socket)=>{
   })
   socket.on("answer", function(data){
     player = players[socket.id]
-    term_id = session_info[player.session_key]["current_term"]["id"]
+    term_id = session_info[player.session_key]["current_term"]
+    current_term = term = terms[term_id]
     session_info[player.session_key]["terms"][term_id][player.uname] = data
     db.collection("answers").insert({
       "timestamp": new Date(),
       "session_key": player.session_key, "uname": player.uname,
-      "term": {"id": term_id, "lesson": terms[term_id].lesson, "term": terms[term_id].term},
-      "score": data.score, "notes": data.notes
+      "tid": term_id, "lesson": current_term.lesson, "term": current_term.term,
+      "score": data.score, "notes": data.notes, "votes": 0, "votect": 0
     })
     io.in(player.session_key).emit("new answer", data)
     for(uname in session_info[player.session_key]["users"]){
@@ -58,6 +61,14 @@ io.on("connection", (socket)=>{
     console.log(player.session_key+"... Next term!")
     io.in(player.session_key).emit("next term")
   })
+  socket.on("vote ednote", function(data){
+    console.log("UPDATE NOTE", data)
+    o_id = new ObjectID(data.answerid)
+    console.log({"_id": o_id})
+    db.collection("answers").update({"_id": o_id}, {
+      $inc: {"votes": parseInt(data.vote), "votect": 1 }}
+    )
+  })
   socket.on('disconnect', function (data) {
     player = players[socket.id]
     console.log(chalk.red("Client Disconnected!"), player)
@@ -65,5 +76,4 @@ io.on("connection", (socket)=>{
       session_info[player.session_key]["users"][player.uname].active = 0
     }
   });
-
 })

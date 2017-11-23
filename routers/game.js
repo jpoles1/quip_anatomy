@@ -5,7 +5,7 @@ global.rand_term = function (session_key) {
     new_term = terms[Object.keys(terms)[Math.floor(Math.random()*Object.keys(terms).length)]]
   }
   new_term.term = new_term.term.charAt(0).toUpperCase() + new_term.term.slice(1)
-  session_info[session_key]["current_term"] = new_term
+  session_info[session_key]["current_term"] = new_term.id
   session_info[session_key]["terms"][new_term.id] = {}
 };
 router.get("/session/:session_key", (req, res) => {
@@ -17,6 +17,7 @@ router.get("/session/:session_key", (req, res) => {
   res.page_data.session_key = session_key
   res.render("launch.hbs", res.page_data)
 })
+//This page is served via AJAX to the quiz screen
 router.get("/session/:session_key/gameon", (req, res) => {
   res.page_data.layout = undefined
   session_key = req.params.session_key
@@ -26,12 +27,22 @@ router.get("/session/:session_key/gameon", (req, res) => {
     return 0
   }
   res.page_data.session_key = session_key
-  /*if(!session_info[session_key]["current_term"]){
-    rand_term(session_key)
-  }*/
-  res.page_data.current_term = session_info[session_key]["current_term"]
+  res.page_data.current_term = terms[session_info[session_key]["current_term"]]
   res.page_data.current_term.image_list = res.page_data.current_term.imgurls.split(";")
-  res.render("game.hbs", res.page_data)
+  //Fetch other student's notes from the DB
+  query = {
+    "tid": parseInt(session_info[session_key]["current_term"]),
+    "votes": {"$gt": -5},
+    "notes": {"$ne": ""}
+  }
+  sort = {"votes": -1}
+  console.log(query)
+  db.collection("answers").find(query).toArray(function(err, results) {
+    if (err) throw err;
+    console.log(results);
+    res.page_data.ed_notes = results
+    res.render("game.hbs", res.page_data)
+  });
 })
 router.get("/session/:session_key/stats", (req, res) => {
   session_key = req.params.session_key
