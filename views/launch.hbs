@@ -116,7 +116,7 @@
     socket.on("new answer", function(data){
       bg_col = {"-1": "bg-danger", "0": "bg-warning", "1": "bg-success"}
       if(data.notes){
-        $("#education #notes").append("<div style='padding: 10px' class='"+bg_col[data.score.toString()]+"'>"+data.notes+"</div>")
+        $("#education #gamenotes").append("<div style='padding: 10px' class='"+bg_col[data.score.toString()]+"'>"+data.notes+"</div>")
       }
       button_num = {"-1": 0, "0": 1, "1": 2}
       score_ct[data.score.toString()] = score_ct[data.score.toString()] + 1;
