@@ -11,8 +11,8 @@
   <!-- Nav tabs -->
   <div id="gamenotes" style="margin-bottom: 15px"></div>
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#ed-notes" aria-controls="ed-notes" role="tab" data-toggle="tab">Shared Notes</a></li>
-    <li role="presentation"><a href="#ed-images" aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
+    <li role="presentation" class="active"><a href="#ed-images" aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
+    <li role="presentation"><a href="#ed-notes" aria-controls="ed-notes" role="tab" data-toggle="tab">Shared Notes</a></li>
     <li role="presentation"><a href="#ed-wikipedia" aria-controls="ed-wikipedia" role="tab" data-toggle="tab">Wikipedia</a></li>
     <li role="presentation"><a href="#ed-stats" aria-controls="ed-stats" role="tab" data-toggle="tab">Stats</a></li>
     <!--<li role="presentation"><a href="#ed-info" aria-controls="ed-info" role="tab" data-toggle="tab">Other References</a></li>-->
@@ -26,7 +26,7 @@
       <br>
       <a href="https://www.google.com/search?tbm=isch&source=lnms&q={{current_term.term}} human anatomy" target="_blank">Google Images</a>
     </div>
-    <div role="tabpanel" class="tab-pane" id="ed-images">
+    <div role="tabpanel" class="tab-pane active" id="ed-images">
       {{#each current_term.image_list}}
         <img src="{{this}}" width="70%"/>
         <br><br>
@@ -35,16 +35,15 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="ed-stats">
       <!-- Include barplot of confidence distributions here -->
+      <h4>Distribution of All Player's Confidence Levels</h4>
       <div id="dist_graph"></div>
     </div>
     <div role="tabpanel" class="tab-pane" id="ed-wikipedia">
       <iframe src="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" style="width: 100%; height: 500px;">
       </iframe>
     </div>
-    <div role="tabpanel" class="tab-pane active" id="ed-notes">
+    <div role="tabpanel" class="tab-pane" id="ed-notes">
       <!-- Include notes with high confidence here -->
-      <div id="wikinote">
-      </div>
       <hr>
       {{#each ed_notes}}
       <div class="ed_notes">
@@ -57,6 +56,8 @@
         </div>
         <div style="padding: 0 15px 0 15px; font-size: 11pt;">
           {{this.notes}}
+          <hr style="margin: 12px 0 2px 0;">
+          <sub><i>Confidence: {{this.confidence_txt}}</i></sub>
           <br>
           <sub><i>Created on: {{this.timestamp}}</i></sub>
         </div>

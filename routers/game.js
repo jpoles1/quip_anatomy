@@ -37,9 +37,16 @@ router.get("/session/:session_key/gameon", (req, res) => {
     if (err) throw err;
     console.log(results);
     res.page_data.ed_notes = results.filter(function(x){
-      console.log(x)
-      return x.votes >= -5 && x.notes != ""
+      return (x.votes >= -5 && x.notes.trim() != "")
     })
+
+    res.page_data.ed_notes = Object.keys(res.page_data.ed_notes).map(function(x){
+      lookup = {"-1": "Don't Know", "0": "Sorta Know", "1": "Definitely Know"}
+      x = res.page_data.ed_notes[x]
+      x.confidence_txt = lookup[x.score.toString()]
+      return x
+    })
+    //Compile data for barchart
     res.page_data.score_stats = JSON.stringify(results.reduce(function(agg, x){
       agg[x.score.toString()] += 1
       return agg
