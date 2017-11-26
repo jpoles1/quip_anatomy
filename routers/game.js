@@ -75,7 +75,7 @@ router.get("/session/:session_key/stats", (req, res) => {
   }, {})
   res.render("stats.hbs", res.page_data)
 })
-router.get("/session/:session_key/export", (req, res) => {
+router.get("/session/:session_key/export.json", (req, res) => {
   session_key = req.params.session_key
   if(!(session_key in session_info)){
     res.redirect("/")
