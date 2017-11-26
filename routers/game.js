@@ -28,7 +28,8 @@ router.get("/session/:session_key/gameon", (req, res) => {
   }
   res.page_data.session_key = session_key
   res.page_data.current_term = terms[session_info[session_key]["current_term"]]
-  res.page_data.current_term.image_list = res.page_data.current_term.imgurls.split(";")
+  res.page_data.current_term.diagram_list = res.page_data.current_term.diagram_urls.split(";")
+  res.page_data.current_term.cadaverimg_list = res.page_data.current_term.cadaverimg_urls.split(";")
   //Fetch other student's notes from the DB
   query = {"tid": parseInt(session_info[session_key]["current_term"])}
   sort = {"votes": -1}
