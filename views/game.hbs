@@ -13,8 +13,9 @@
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#ed-notes" aria-controls="ed-notes" role="tab" data-toggle="tab">Shared Notes</a></li>
     <li role="presentation"><a href="#ed-images" aria-controls="ed-images" role="tab" data-toggle="tab">Images</a></li>
-    <li role="presentation"><a href="#ed-info" aria-controls="ed-info" role="tab" data-toggle="tab">Other References</a></li>
+    <li role="presentation"><a href="#ed-wikipedia" aria-controls="ed-wikipedia" role="tab" data-toggle="tab">Wikipedia</a></li>
     <li role="presentation"><a href="#ed-stats" aria-controls="ed-stats" role="tab" data-toggle="tab">Stats</a></li>
+    <!--<li role="presentation"><a href="#ed-info" aria-controls="ed-info" role="tab" data-toggle="tab">Other References</a></li>-->
   </ul>
 
   <!-- Tab panes -->
@@ -34,6 +35,11 @@
     </div>
     <div role="tabpanel" class="tab-pane" id="ed-stats">
       <!-- Include barplot of confidence distributions here -->
+      <div id="dist_graph"></div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="ed-wikipedia">
+      <iframe src="https://en.wikipedia.org/w/index.php?search={{current_term.term}}" style="width: 100%; height: 500px;">
+      </iframe>
     </div>
     <div role="tabpanel" class="tab-pane active" id="ed-notes">
       <!-- Include notes with high confidence here -->
@@ -60,3 +66,27 @@
     </div>
   </div>
 </div>
+<script>
+  $(function(){
+    data =  {{{score_stats}}}
+    var chart = c3.generate({
+
+      bindto: '#dist_graph',
+      data: {
+        x: "x",
+        type: "bar",
+        columns: [
+          ["x", "Don't Know", "Sorta Know", "Definitely Know"],
+          ["Count", data["-1"], data["0"], data["1"]]
+        ]
+      },
+      axis: {
+          x: {
+              type: 'category' // this needed to load string x value
+          }
+      }
+    });
+    chart.resize();
+    $(window).resize()
+  })
+</script>

@@ -30,17 +30,20 @@ router.get("/session/:session_key/gameon", (req, res) => {
   res.page_data.current_term = terms[session_info[session_key]["current_term"]]
   res.page_data.current_term.image_list = res.page_data.current_term.imgurls.split(";")
   //Fetch other student's notes from the DB
-  query = {
-    "tid": parseInt(session_info[session_key]["current_term"]),
-    "votes": {"$gt": -5},
-    "notes": {"$ne": ""}
-  }
+  query = {"tid": parseInt(session_info[session_key]["current_term"])}
   sort = {"votes": -1}
   console.log(query)
   db.collection("answers").find(query).toArray(function(err, results) {
     if (err) throw err;
     console.log(results);
-    res.page_data.ed_notes = results
+    res.page_data.ed_notes = results.filter(function(x){
+      console.log(x)
+      return x.votes >= -5 && x.notes != ""
+    })
+    res.page_data.score_stats = JSON.stringify(results.reduce(function(agg, x){
+      agg[x.score.toString()] += 1
+      return agg
+    }, {"-1": 0, "0": 0, "1": 0}))
     res.render("game.hbs", res.page_data)
   });
 })
